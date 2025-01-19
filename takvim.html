@@ -59,12 +59,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>20:00'a Ne Kadar Kaldı?</h1>
+        <h1 id="time">20:00'a Ne Kadar Kaldı?</h1>
         <div class="time-container" id="time-remaining">Hesaplanıyor...</div>
-        <div class="note">Saat, Türkiye saati ile gösterilmektedir.</div>
+        <div class="note" id="note">Saat, Türkiye saati ile gösterilmektedir.</div>
+        <div id="stream-status"></div> <!-- Yayın durumu burada görünecek -->
     </div>
 
     <script>
+        let isStreamActive = false;  // Yayın durumunu kontrol eden bir değişken
+
         function calculateTimeRemaining() {
             const now = new Date();
             const targetTime = new Date();
@@ -83,13 +86,49 @@
             const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-            document.getElementById("time-remaining").textContent = 
-                `${hours} saat, ${minutes} dakika, ${seconds} saniye`;
+            if (!isStreamActive) {
+                document.getElementById("time-remaining").textContent = 
+                    `${hours} saat, ${minutes} dakika, ${seconds} saniye`;
+            }
+        }
+
+        // API'den Garly'nin yayında olup olmadığını kontrol et
+        function checkStreamStatus() {
+            fetch('https://kick.com/api/v1/channels/garly')  // API endpointi buraya eklenmeli
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // API yanıtını kontrol etmek için konsola yazdırıyoruz
+
+                    // API yanıtında 'livestream' null mı kontrol et
+                    if (data.livestream === null) {
+                        document.getElementById("stream-status").textContent = "Garly yayında değil.";
+                        isStreamActive = false;
+                    } else {
+                        document.getElementById("time-remaining").textContent = "Garly yayında!";
+                        document.getElementById("time").textContent = "";
+                        document.getElementById("note").textContent = "";
+                        isStreamActive = true;
+                    }
+                })
+                .catch(error => {
+                    console.error("API çağrısı hatası:", error);
+                });
         }
 
         // İlk hesaplama ve her saniye güncelleme
         calculateTimeRemaining();
         setInterval(calculateTimeRemaining, 1000);
+
+        var kontrol = 0;
+        if(kontrol = 0){
+        checkStreamStatus();
+        setInterval(checkStreamStatus, 500);  // Her dakika bir kontrol yap
+        kontrol += 1}
+        if(kontrol = 1){
+            checkStreamStatus();
+            setInterval(checkStreamStatus, 5000);  // Her dakika bir kontrol yap
+        }
+
     </script>
 </body>
 </html>
