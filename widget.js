@@ -91,7 +91,7 @@ window.addEventListener("load", () => {
             textContainer.style.overflow = "hidden"
   
             if (user.username === "Garly") {
-              name.innerText += " - Server owner"
+              name.innerText += " - Sunucu Sahibi"
               member.classList.add("server-owner")
             } else if (user.username === "GARLYbot") {
               member.classList.add("garlybot")
