@@ -43,7 +43,7 @@ window.addEventListener('load', () => {
         //appending head, body and footer to the widget
         widget.append(head, body, footer);
         //data
-        fetch(`https://discord.com/api/guilds/${id}/widget.json`).then((data) => {
+        fetch(`https://discord.com/api/guilds/1343896960377028650/widget.json`).then((data) => {
             data.json().then((data) => {
                 //member count
                 count.innerHTML = `<strong>${data.presence_count || 0}</strong> Üye Çevrimiçi`;
