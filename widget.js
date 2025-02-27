@@ -25,11 +25,7 @@ window.addEventListener('load', () => {
         //footer
         let footer = document.createElement('widget-footer');
         let footerInfo = document.createElement('widget-footer-info');
-        joinButton.addEventListener('click', (e) => {
-            if (joinButton.getAttribute('href')) {
-                window.open(joinButton.getAttribute('href') || '', joinButton.getAttribute('target') || '', '');
-            }
-        });
+
         footer.style.backgroundColor = '#1e1f22'; // Beyaz arka plan rengi
         
         footerInfo.innerText = footerText;
