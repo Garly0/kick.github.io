@@ -29,8 +29,7 @@ window.addEventListener('load', () => {
         footer.style.backgroundColor = '#1e1f22'; // Beyaz arka plan rengi
         
         footerInfo.innerText = footerText;
-        joinButton.innerText = 'Join';
-        footer.append(footerInfo, joinButton);
+        footer.append(footerInfo);
         //style
         widget.innerHTML = '<link rel="stylesheet" href="widget.css">';
         widget.style.height = height;
@@ -49,9 +48,8 @@ window.addEventListener('load', () => {
                 //member count
                 count.innerHTML = `<strong>${data.presence_count || 0}</strong> Üye Çevrimiçi`;
                 //join button
-                joinButton.setAttribute('href', data.instant_invite);
-                joinButton.setAttribute('target', '_blank');
-                if (data.instant_invite === null || data.instant_invite === undefined) joinButton.remove();
+
+
                 //users
                 data.members.forEach((user) => {
                     let member = document.createElement('widget-member');
