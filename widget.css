@@ -4,6 +4,8 @@ discord-widget {
     --textColor: #fff;
     --buttonColor: #5865f2;
     --statusColor: #858585;
+    --ownerStatusColor: #80848e;
+    --botColor: #5865f2;
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
@@ -14,36 +16,41 @@ discord-widget {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    border-radius: 6px;
+    border-radius: 0;
     overflow: hidden;
     font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: 14px;
     color: #fff;
-}
-
-discord-widget ::-webkit-scrollbar {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  discord-widget ::-webkit-scrollbar {
     width: 20px;
-}
-
-discord-widget ::-webkit-scrollbar-track {
+  }
+  
+  discord-widget ::-webkit-scrollbar-track {
     background: var(--bgColor);
-}
-
-discord-widget ::-webkit-scrollbar-thumb {
+  }
+  
+  discord-widget ::-webkit-scrollbar-thumb {
     background: #222;
     border: 8px solid var(--bgColor);
     border-radius: 10px;
     -webkit-transition: ease-in-out 0.5s;
     transition: ease-in-out 0.5s;
-}
-
-discord-widget ::-webkit-scrollbar-thumb:hover {
+  }
+  
+  discord-widget ::-webkit-scrollbar-thumb:hover {
     background: var(--color);
     -webkit-transition: ease-in-out 0.5s;
     transition: ease-in-out 0.5s;
-}
-
-discord-widget widget-header {
+  }
+  
+  discord-widget widget-header {
     background-color: var(--color);
     padding: 20px;
     display: -webkit-box;
@@ -54,9 +61,9 @@ discord-widget widget-header {
     align-items: center;
     -ms-flex-negative: 0;
     flex-shrink: 0;
-}
-
-discord-widget widget-header widget-logo {
+  }
+  
+  discord-widget widget-header widget-logo {
     background: url(https://dipped.dev/static/images/discord-logo-white.svg) 50% no-repeat;
     width: 124px;
     height: 34px;
@@ -65,16 +72,16 @@ discord-widget widget-header widget-logo {
     -webkit-transition: opacity 0.25s ease-out;
     -o-transition: opacity 0.25s ease-out;
     transition: opacity 0.25s ease-out;
-}
-
-discord-widget widget-header widget-header-count {
+  }
+  
+  discord-widget widget-header widget-header-count {
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
     text-align: right;
-}
-
-discord-widget widget-body {
+  }
+  
+  discord-widget widget-body {
     background-color: var(--bgColor);
     -webkit-box-flex: 1;
     -ms-flex: 1;
@@ -84,11 +91,14 @@ discord-widget widget-body {
     padding: 20px;
     overflow-x: hidden;
     overflow-y: scroll;
-}
-
-discord-widget widget-body widget-member {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+  }
+  
+  discord-widget widget-body widget-member {
     position: relative;
-    width: auto;
+    width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -99,86 +109,139 @@ discord-widget widget-body widget-member {
     -ms-flex: 0;
     flex: 0;
     margin: 6px 0;
-}
-
-discord-widget widget-body widget-member widget-member-avatar {
-    margin-right: 4px;
+    background-color: rgba(30, 31, 34, 0.7);
+    border-radius: 8px;
+    padding: 10px;
+    transition: all 0.2s ease;
+  }
+  
+  discord-widget widget-body widget-member:hover {
+    background-color: rgba(40, 43, 48, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  discord-widget widget-body widget-member.server-owner {
+    background-color: rgba(88, 101, 242, 0.2);
+    border: 2px solid var(--color);
+  }
+  
+  discord-widget widget-body widget-member.server-owner widget-member-name {
+    color: var(--color);
+  }
+  
+  discord-widget widget-body widget-member.server-owner::before {
+    content: "👑";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 20px;
+  }
+  
+  discord-widget widget-body widget-member.garlybot {
+    background-color: rgba(88, 101, 242, 0.1);
+    border: 2px solid var(--botColor);
+    padding-left: 25px;
+  }
+  
+  discord-widget widget-body widget-member.garlybot widget-member-name {
+    color: var(--botColor);
+  }
+  
+  discord-widget widget-body widget-member.garlybot::before {
+    content: "🤖";
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    z-index: 1;
+  }
+  
+  discord-widget widget-body widget-member widget-member-avatar {
+    margin-right: 15px;
     position: relative;
     contain: content;
-}
-
-discord-widget widget-body widget-member widget-member-avatar img {
+  }
+  
+  discord-widget widget-body widget-member widget-member-avatar img {
     border-radius: 50%;
-    height: 32px;
-    width: 32px;
+    height: 40px;
+    width: 40px;
     border: 2px solid var(--color);
     background-color: var(--color);
-}
-
-discord-widget widget-body widget-member .widget-member-status {
+  }
+  
+  discord-widget widget-body widget-member .widget-member-status {
     color: var(--statusColor);
     border-radius: 50%;
-    bottom: 5px;
-    height: 10px;
+    bottom: 0;
+    height: 12px;
     position: absolute;
-    right: 0px;
-    width: 10px;
-    border: 2px solid var(--color);
-}
-
-discord-widget widget-body widget-member widget-member-status-online {
+    right: 0;
+    width: 12px;
+    border: 2px solid var(--bgColor);
+  }
+  
+  discord-widget widget-body widget-member widget-member-status-online {
     background-color: #57f287;
-}
-
-discord-widget widget-body widget-member widget-member-status-idle {
+  }
+  
+  discord-widget widget-body widget-member widget-member-status-idle {
     background-color: #fee75c;
-}
-
-discord-widget widget-body widget-member widget-member-status-dnd {
+  }
+  
+  discord-widget widget-body widget-member widget-member-status-dnd {
     background-color: #ed4245;
-}
-
-discord-widget widget-body widget-member widget-member-status-text {
-    height: 32px;
-    max-width: 80px;
+  }
+  
+  discord-widget widget-body widget-member widget-member-status-offline {
+    background-color: #80848e;
+  }
+  
+  discord-widget widget-body widget-member widget-member-status-text {
+    height: auto;
+    max-width: none;
     overflow: hidden;
-    line-height: 32px;
-    padding: 0 8px 0 37px;
-    pointer-events: none;
-    position: absolute;
+    line-height: normal;
+    padding: 0;
+    margin-top: 4px;
+    display: block;
+    position: relative;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    top: 0;
-    left: 172px;
+    top: auto;
+    left: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     white-space: nowrap;
     color: var(--statusColor);
-}
-
-discord-widget widget-body widget-member widget-member-name {
+    font-size: 12px;
+  }
+  
+  discord-widget widget-body widget-member widget-member-name {
     font-weight: bold;
-    height: 32px;
-    max-width: 160px;
+    height: auto;
+    max-width: none;
     overflow: hidden;
-    line-height: 32px;
-    padding: 0 8px 0 37px;
-    pointer-events: none;
-    position: absolute;
+    line-height: normal;
+    padding: 0;
+    position: relative;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     top: 0;
-    left: 12px;
+    left: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     white-space: nowrap;
-}
-
-discord-widget widget-footer {
+    font-size: 16px;
+  }
+  
+  discord-widget widget-footer {
     background-color: var(--bgColor);
     -webkit-box-shadow: 0 -1px 18px var(--bgColor), 0 -1px 0 var(--bgColor);
     box-shadow: 0 -1px 18px var(--bgColor), 0 -1px 0 var(--bgColor);
@@ -192,18 +255,18 @@ discord-widget widget-footer {
     -ms-flex-align: right;
     align-items: right;
     min-height: 30px;
-}
-
-discord-widget widget-footer widget-footer-info {
+  }
+  
+  discord-widget widget-footer widget-footer-info {
     display: inline-block;
     font-weight: 500;
     opacity: 0.1;
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
-}
-
-discord-widget widget-footer widget-button-join {
+  }
+  
+  discord-widget widget-footer widget-button-join {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -226,10 +289,12 @@ discord-widget widget-footer widget-button-join {
     -webkit-transition: opacity 0.25s ease-out;
     -o-transition: opacity 0.25s ease-out;
     transition: opacity 0.25s ease-out;
-}
-
-discord-widget widget-footer widget-button-join:hover {
+  }
+  
+  discord-widget widget-footer widget-button-join:hover {
     background-color: var(--buttonColor);
     cursor: pointer;
     color: white;
-}
+  }
+  
+  
