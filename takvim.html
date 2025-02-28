@@ -5,79 +5,450 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Takvim</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6e7e9c, #3e4a59);
+            font-family: 'Montserrat', sans-serif;
+            background: #0f0c29;
+            background: linear-gradient(-45deg, #24243e, #302b63, #0f0c29);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
-
+        
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: var(--opacity);
+        }
+        
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: var(--opacity);
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.2;
+                transform: scale(0.5);
+            }
+        }
+        
         .container {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.7);
+            background: rgba(15, 12, 41, 0.8);
+            backdrop-filter: blur(10px);
             padding: 40px 60px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(0);
+            animation: float 6s ease-in-out infinite;
+            max-width: 90%;
+            width: 500px;
         }
-
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                transform: translateY(-15px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            }
+        }
+        
         h1 {
             font-size: 2.5rem;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-out;
+            background: linear-gradient(to right, #fff, #c9d6ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .time-container {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #ffdd57;
-            letter-spacing: 1px;
-            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
         }
-
+        
+        .time-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .time-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffdd57, #ff9f43);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            min-width: 60px;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        .time-label {
+            font-size: 0.9rem;
+            color: #c9d6ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+        
+        .separator {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.3);
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+        
         .note {
             font-size: 1rem;
             color: #f5f5f5;
-            margin-top: 15px;
+            margin-top: 25px;
+            opacity: 0.7;
+            animation: fadeIn 1.5s ease-out;
+            transition: all 0.3s ease;
         }
-
+        
+        .note:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+        
+        #stream-status {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: fadeIn 2s ease-out;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .stream-active {
+            background: linear-gradient(135deg, #00b09b, #96c93d) !important;
+            box-shadow: 0 4px 15px rgba(150, 201, 61, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .loading {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 20px;
+        }
+        
+        .loading div {
+            position: absolute;
+            top: 8px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #ffdd57;
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        
+        .loading div:nth-child(1) {
+            left: 8px;
+            animation: loading1 0.6s infinite;
+        }
+        
+        .loading div:nth-child(2) {
+            left: 8px;
+            animation: loading2 0.6s infinite;
+        }
+        
+        .loading div:nth-child(3) {
+            left: 32px;
+            animation: loading2 0.6s infinite;
+        }
+        
+        .loading div:nth-child(4) {
+            left: 56px;
+            animation: loading3 0.6s infinite;
+        }
+        
+        @keyframes loading1 {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes loading3 {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(0);
+            }
+        }
+        
+        @keyframes loading2 {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(24px, 0);
+            }
+        }
+        
         @media (max-width: 600px) {
             .container {
-                padding: 30px 40px;
+                padding: 30px 20px;
+                width: 90%;
             }
+            
             h1 {
+                font-size: 1.8rem;
+            }
+            
+            .time-value {
+                font-size: 2rem;
+                min-width: 45px;
+            }
+            
+            .separator {
                 font-size: 2rem;
             }
-            .time-container {
-                font-size: 1.8rem;
+            
+            .time-label {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Confetti Animation */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            display: none;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--color);
+            opacity: var(--opacity);
+            transform: rotate(var(--rotation));
+            animation: confetti-fall var(--fall-duration) linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(var(--rotation));
+            }
+            100% {
+                transform: translateY(100vh) rotate(calc(var(--rotation) + 360deg));
             }
         }
     </style>
 </head>
 <body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="confetti-container" id="confetti-container"></div>
+    
     <div class="container">
-        <h1 id="time">20:00'a Ne Kadar Kaldı?</h1>
-        <div class="time-container" id="time-remaining">Hesaplanıyor...</div>
+        <h1 id="time">19:00'a Ne Kadar Kaldı?</h1>
+        
+        <div class="time-container" id="time-remaining">
+            <div class="time-block">
+                <div class="time-value" id="hours">00</div>
+                <div class="time-label">Saat</div>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-block">
+                <div class="time-value" id="minutes">00</div>
+                <div class="time-label">Dakika</div>
+            </div>
+            <div class="separator">:</div>
+            <div class="time-block">
+                <div class="time-value" id="seconds">00</div>
+                <div class="time-label">Saniye</div>
+            </div>
+        </div>
+        
         <div class="note" id="note">Saat, Türkiye saati ile gösterilmektedir.</div>
-        <div id="stream-status"></div> <!-- Yayın durumu burada görünecek -->
+        
+        <div id="stream-status">
+            <div class="loading">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            Yayın durumu kontrol ediliyor...
+        </div>
     </div>
 
     <script>
-        let isStreamActive = false;  // Yayın durumunu kontrol eden bir değişken
-
+        // Create stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random animation duration and opacity
+                const duration = 3 + Math.random() * 7;
+                const opacity = 0.2 + Math.random() * 0.8;
+                
+                star.style.setProperty('--duration', `${duration}s`);
+                star.style.setProperty('--opacity', opacity);
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti-container');
+            confettiContainer.style.display = 'block';
+            confettiContainer.innerHTML = '';
+            
+            const colors = ['#ff9f43', '#ffdd57', '#0984e3', '#6c5ce7', '#00b894', '#ff6b6b'];
+            const confettiCount = 150;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // Random position, color, and animation properties
+                const x = Math.random() * 100;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const opacity = 0.6 + Math.random() * 0.4;
+                const rotation = Math.random() * 360;
+                const fallDuration = 4 + Math.random() * 6;
+                
+                confetti.style.setProperty('--color', color);
+                confetti.style.setProperty('--opacity', opacity);
+                confetti.style.setProperty('--rotation', `${rotation}deg`);
+                confetti.style.setProperty('--fall-duration', `${fallDuration}s`);
+                confetti.style.left = `${x}%`;
+                confetti.style.backgroundColor = color;
+                
+                confettiContainer.appendChild(confetti);
+            }
+            
+            // Remove confetti after animation completes
+            setTimeout(() => {
+                confettiContainer.style.display = 'none';
+            }, 10000);
+        }
+        
+        let isStreamActive = false;
+        let targetReached = false;
+        
         function calculateTimeRemaining() {
             const now = new Date();
             const targetTime = new Date();
             
-            // Hedef saat: 20:00
-            targetTime.setHours(20, 0, 0, 0);
+            // Hedef saat: 19:00 (changed from 20:00)
+            targetTime.setHours(19, 0, 0, 0);
             
-            // Eğer şu an 20:00'ı geçtiyse, hedefi yarına ayarla
+            // Eğer şu an 19:00'ı geçtiyse, hedefi yarına ayarla
             if (now > targetTime) {
                 targetTime.setDate(targetTime.getDate() + 1);
+                if (targetReached) {
+                    targetReached = false;
+                }
             }
 
             const timeDifference = targetTime - now;
@@ -86,49 +457,100 @@
             const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-            if (!isStreamActive) {
-                document.getElementById("time-remaining").textContent = 
-                    `${hours} saat, ${minutes} dakika, ${seconds} saniye`;
+            // Animate the countdown numbers
+            animateCountdown(hours, minutes, seconds);
+            
+            // Check if countdown reached zero
+            if (hours === 0 && minutes === 0 && seconds === 0 && !targetReached) {
+                createConfetti();
+                targetReached = true;
+            }
+        }
+        
+        function animateCountdown(hours, minutes, seconds) {
+            // Format numbers with leading zeros
+            const formattedHours = hours.toString().padStart(2, '0');
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            const formattedSeconds = seconds.toString().padStart(2, '0');
+            
+            // Update the DOM with smooth transitions
+            updateCountdownDigit('hours', formattedHours);
+            updateCountdownDigit('minutes', formattedMinutes);
+            updateCountdownDigit('seconds', formattedSeconds);
+        }
+        
+        function updateCountdownDigit(id, newValue) {
+            const element = document.getElementById(id);
+            if (element.textContent !== newValue) {
+                element.style.transform = 'translateY(-10px)';
+                element.style.opacity = '0';
+                
+                setTimeout(() => {
+                    element.textContent = newValue;
+                    element.style.transform = 'translateY(0)';
+                    element.style.opacity = '1';
+                }, 100);
             }
         }
 
-        // API'den Garly'nin yayında olup olmadığını kontrol et
+        // API'den yayın durumunu kontrol et
         function checkStreamStatus() {
-            fetch('https://kick.com/api/v1/channels/garly')  // API endpointi buraya eklenmeli
-                .then(response => response.json())
+            const statusElement = document.getElementById("stream-status");
+            
+            fetch('https://kick.com/api/v1/channels/garly')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    console.log(data); // API yanıtını kontrol etmek için konsola yazdırıyoruz
-
                     // API yanıtında 'livestream' null mı kontrol et
                     if (data.livestream === null) {
-                        document.getElementById("stream-status").textContent = "Garly yayında değil.";
+                        statusElement.innerHTML = "Garly yayında değil";
+                        statusElement.classList.remove('stream-active');
                         isStreamActive = false;
                     } else {
-                        document.getElementById("time-remaining").textContent = "Garly yayında!";
-                        document.getElementById("time").textContent = "";
-                        document.getElementById("note").textContent = "";
+                        statusElement.innerHTML = "🔴 Garly şu anda yayında!";
+                        statusElement.classList.add('stream-active');
+                        document.getElementById("note").textContent = "Hemen yayına katılabilirsiniz!";
                         isStreamActive = true;
                     }
                 })
                 .catch(error => {
                     console.error("API çağrısı hatası:", error);
+                    statusElement.innerHTML = "Yayın durumu kontrol edilemiyor";
+                    statusElement.classList.remove('stream-active');
                 });
         }
-
-        // İlk hesaplama ve her saniye güncelleme
-        calculateTimeRemaining();
-        setInterval(calculateTimeRemaining, 1000);
-
-        var kontrol = 0;
-        if(kontrol = 0){
-        checkStreamStatus();
-        setInterval(checkStreamStatus, 500);  // Her dakika bir kontrol yap
-        kontrol += 1}
-        if(kontrol = 1){
+        
+        // Initialize animations and functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create stars background
+            createStars();
+            
+            // Set up initial countdown
+            calculateTimeRemaining();
+            
+            // Update countdown every second
+            setInterval(calculateTimeRemaining, 1000);
+            
+            // Check stream status initially and every 30 seconds
             checkStreamStatus();
-            setInterval(checkStreamStatus, 5000);  // Her dakika bir kontrol yap
-        }
-
+            setInterval(checkStreamStatus, 30000);
+            
+            // Add hover effects to container
+            const container = document.querySelector('.container');
+            container.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+                this.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.4)';
+            });
+            
+            container.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+        });
     </script>
 </body>
 </html>
