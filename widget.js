@@ -104,10 +104,10 @@ window.addEventListener("load", () => {
           count.classList.add("animated-count")
 
           // Check if GARLYbot exists, if not, add it
-          const garlyBotExists = data.members.some((member) => member.username === "GARLYbot")
+          const garlyBotExists = data.members.some((member) => member.username === "GarlyBot (Alpha Test)")
           if (!garlyBotExists) {
             data.members.unshift({
-              username: "GARLYbot",
+              username: "GarlyBot (Alpha Test)",
               status: "online",
               avatar_url:
                 "https://cdn.discordapp.com/avatars/1214433179516018738/151a16074f3bbfb2253cbd8755f313fe.webp?size=80", // Default avatar
@@ -129,8 +129,8 @@ window.addEventListener("load", () => {
           data.members.sort((a, b) => {
             if (a.username === "Garly") return -1
             if (b.username === "Garly") return 1
-            if (a.username === "GARLYbot") return -1
-            if (b.username === "GARLYbot") return 1
+            if (a.username === "GarlyBot (Alpha Test)") return -1
+            if (b.username === "GarlyBot (Alpha Test)") return 1
             return 0
           })
 
@@ -164,7 +164,7 @@ window.addEventListener("load", () => {
             if (user.username === "Garly") {
               name.innerText += " - Sunucu Sahibi"
               member.classList.add("server-owner")
-            } else if (user.username === "GARLYbot") {
+            } else if (user.username === "GarlyBot (Alpha Test)") {
               member.classList.add("garlybot")
               status.style.backgroundColor = "#57f287" // Online status color
             }
