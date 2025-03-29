@@ -73,7 +73,7 @@ window.addEventListener("load", () => {
                 "https://images-ext-1.discordapp.net/external/WI0lLrcydokdICkNi7JmRlcrR2_BngGao4MnSiMDC8Q/https/cdn.discordapp.com/avatars/981572455434948638/980b74c526e45cde1df8f8a63a1273da.webp",
             },
             {
-              username: "GARLYbot",
+              username: "GarlyBot",
               status: "online",
               avatar_url:
                 "https://cdn.discordapp.com/avatars/1214433179516018738/151a16074f3bbfb2253cbd8755f313fe.webp?size=80",
